@@ -9,8 +9,8 @@ class Student:
         self.finished_courses = []
         self.courses_in_progress = []
         self.grades = {}
-    def rate_hw(self, lecturer, course, grade):
-        if isinstance(lecturer, Lecturer) and course in self.courses_in_progress and course in lecturer.courses_in_progress:
+    def rate_lecture(self, lecturer, course, grade):
+        if isinstance(lecturer, Lecturer) and course in self.courses_in_progress:
             if course in lecturer.grades:
                 lecturer.grades[course] += [grade]
             else:
@@ -32,11 +32,16 @@ class Mentor:
                 student.grades[course] = [grade]
         else:
             return 'Ошибка'
+
 class Lecturer(Mentor):
     def __init__(self, name, surname, courses_in_progress):
         self.name = name
         self.surname = surname
         self.courses_in_progress = []
+        self.grade = []
+
+    def __str__(self, name, surname, grade):
+        self.name = print(f'Имя: ', name)
 
 
 
