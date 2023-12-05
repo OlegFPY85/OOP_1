@@ -1,4 +1,29 @@
-import self as self
+class Mentor:
+    def __init__(self, name, surname):
+        self.name = name
+        self.surname = surname
+        self.courses_attached = []
+
+    def __str__(self):
+        return f"Имя: {self.name}\nФамилия: {self.surname}"
+
+
+class Lecturer(Mentor):
+    def __init__(self, name, surname):
+        super().__init__(name, surname)
+        self.avg_grade = 0
+
+    def __str__(self):
+        return super().__str__() + f"\nСредняя оценка за лекции: {self.avg_grade}"
+
+    def update_avg_grade(self, grades):
+        self.avg_grade = sum(grades) / len(grades)
+
+
+
+class Reviewer(Mentor):
+    def __str__(self):
+        return super().__str__() + "\nУ лекторов:"
 
 
 class Student:
@@ -9,56 +34,37 @@ class Student:
         self.finished_courses = []
         self.courses_in_progress = []
         self.grades = {}
-    def rate_lecture(self, lecturer, course, grade):
-        if isinstance(lecturer, Lecturer) and course in self.courses_in_progress:
-            if course in lecturer.grades:
-                lecturer.grades[course] += [grade]
-            else:
-                lecturer.grades[course] = [grade]
+
+
+    def add_grade(self, course, grade):
+        if course in self.grades:
+            self.grades[course].append(grade)
         else:
-            return 'Ошибка'
+            self.grades[course] = [grade]
 
-class Mentor:
-    def __init__(self, name, surname):
-        self.name = name
-        self.surname = surname
-        self.courses_attached = []
+    def calculate_avg_grade(self):
+        total_sum = sum(sum(grades) / len(grades) for grades in self.grades.values())
+        total_count = sum(len(grades) for grades in self.grades.values())
+        return total_sum / total_count if total_count > 0 else 0
 
-    def rate_hw(self, student, course, grade):
-        if isinstance(student, Student) and course in self.courses_attached and course in student.courses_in_progress:
-            if course in student.grades:
-                student.grades[course] += [grade]
-            else:
-                student.grades[course] = [grade]
-        else:
-            return 'Ошибка'
+    def __str__(self):
+        return f"Имя: {self.name}\nФамилия: {self.surname}\nСредняя оценка за домашние задания: {self.calculate_avg_grade()}\n" \
+               f"Курсы в процессе изучения: {', '.join(self.courses_in_progress)}\n" \
+               f"Завершенные курсы: {', '.join(self.finished_courses)}"
+students = [
+    Student('Ruoy', 'Eman', 'your_gender')
+]
 
-class Lecturer(Mentor):
-    def __init__(self, name, surname, courses_in_progress):
-        self.name = name
-        self.surname = surname
-        self.courses_in_progress = []
-        self.grade = []
+students[0].courses_in_progress.append('Python')
+students[0].finished_courses.append('Введение в программирование')
 
-    def __str__(self, name, surname, grade):
-        self.name = print(f'Имя: ', name)
+students[0].add_grade('Python', 9)
+students[0].add_grade('Python', 9)
+students[0].add_grade('Python', 10)
+students[0].add_grade('Math', 8)
 
+best_student = max(students, key=lambda student: student.calculate_avg_grade())
+# best_lecturer = max(lecturer, key=lambda lecturer: lecturer.avg_grade)
 
-
-
-class Reviewer(Mentor):
-    def __init__(self):
-        self.courses_attached = []
-        self.rate_hw()
-
-best_student = Student('Ruoy', 'Eman', 'your_gender')
-best_student.courses_in_progress += ['Python']
-
-cool_mentor = Mentor('Some', 'Buddy')
-cool_mentor.courses_attached += ['Python']
-
-cool_mentor.rate_hw(best_student, 'Python', 10)
-cool_mentor.rate_hw(best_student, 'Python', 10)
-cool_mentor.rate_hw(best_student, 'Python', 10)
-
-print(best_student.grades)
+print(f"Лучший студент:\n{best_student}")
+# print(f"\nЛучший лектор:\n{best_lecturer}")
