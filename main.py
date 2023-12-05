@@ -52,19 +52,47 @@ class Student:
                f"Курсы в процессе изучения: {', '.join(self.courses_in_progress)}\n" \
                f"Завершенные курсы: {', '.join(self.finished_courses)}"
 students = [
-    Student('Ruoy', 'Eman', 'your_gender')
+    Student('Ruoy', 'Eman', 'your_gender'),
+    Student('Hagrid', 'Rubius', 'male'),
+    Student('Rubi', 'Scarlet', 'female')
+]
+
+lecturers = [
+    Lecturer('Some', 'Buddy'),
+    Lecturer('Duck', 'Nuckem'),
+    Lecturer('Nazu', 'Dragnil')
 ]
 
 students[0].courses_in_progress.append('Python')
 students[0].finished_courses.append('Введение в программирование')
+
+students[1].courses_in_progress.append('Python')
+students[1].finished_courses.append('Автоматизация тестирования в Selenium')
+
+students[2].courses_in_progress.append('Python')
+students[2].finished_courses.append('Избранные вопросы ООП')
 
 students[0].add_grade('Python', 9)
 students[0].add_grade('Python', 9)
 students[0].add_grade('Python', 10)
 students[0].add_grade('Math', 8)
 
+students[1].add_grade('Python', 7)
+students[1].add_grade('Автоматизация тестирования в Selenium', 9)
+students[1].add_grade('Python', 9)
+students[1].add_grade('Python', 8)
+
+students[2].add_grade('Python', 8)
+students[2].add_grade('Избранные вопросы ООП', 9)
+students[2].add_grade('Python', 10)
+students[2].add_grade('Python', 10)
+
+lecturers[0].update_avg_grade([10, 10, 9, 9])
+lecturers[1].update_avg_grade([10, 8, 10, 9])
+
+
 best_student = max(students, key=lambda student: student.calculate_avg_grade())
-# best_lecturer = max(lecturer, key=lambda lecturer: lecturer.avg_grade)
+best_lecturer = max(lecturers, key=lambda lecturer: lecturer.avg_grade)
 
 print(f"Лучший студент:\n{best_student}")
-# print(f"\nЛучший лектор:\n{best_lecturer}")
+print(f"\nЛучший лектор:\n{best_lecturer}")
